@@ -82,15 +82,14 @@ if ($list && !empty($list_arr)){
 
                             <?php if ($showfileupload = $params->get('showfileupload', 0)) : ?>
                             <div class="form-uploadfile">
-                                <span class="uploader-header">Прикрепить файл</span>
                                 <div class="upload-control">
                                     <div class="uploader-wrap">
-                                        <span class="fileupload-header">Если у вас несколько файлов, поместить их в архив</span>
-                                        <input class="field" name="Filedata" type="file" id="file"/>
+                                        <span>У вас уже есть проект или идеи? Прикрепите их к письму</span>
+                                        <input class="field input-file" name="Filedata" type="file" id="file"/>
                                     </div>
                                 </div>
-                                <div id="filename">
-                                    <span class="flname"></span><span id="remove-file" class="icon-black icon-remove-circle"></span>
+                                <div id="filename" class="filename-wrapper">
+                                    <span class="flname"></span><span id="remove-file" class="remove-file-btn" class="icon-black icon-remove-circle"></span>
                                 </div>
                             </div>
                             <?php endif; ?>
