@@ -64,7 +64,7 @@ if ($list && !empty($list_arr)){
 
                             <?php if ($showphone = $params->get('showphone', 0)) : ?>
                             <div class="controlls">
-                                <input type="text" class="<?php echo $showphone == 2 ? 'required' : '' ?> field" <?php if($params->get('showphone') == 2) echo 'data-validation="number"'; ?> value="" name="phone" placeholder="<?php echo $params->get('phone_placeholder'); ?>" />
+                                <input type="text" class="<?php echo $showphone == 2 ? 'required' : '' ?> field" <?php if($params->get('showphone') == 2) echo 'data-validation="custom" data-validation-regexp="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$"'; ?> value="" name="phone" placeholder="<?php echo $params->get('phone_placeholder'); ?>" />
                             </div>
                             <?php endif; ?>
 
