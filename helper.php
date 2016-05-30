@@ -4,14 +4,13 @@ define('MOD_JSEND_FIELD_REQUIRED', 2);
 define('DS', DIRECTORY_SEPARATOR);
 
 jimport('joomla.filesystem.file');
-
 sendHelper::send();
 
 class sendHelper{
 
     public static $name;
     public static $email;
-    public static $desc;
+    public static $comment;
     public static $phone;
     public static $firm;
     public static $attachment;
@@ -28,6 +27,8 @@ class sendHelper{
     public static $list_val;
 
     public static $page_redirect;
+	public static $ajax;
+	public static $ajax_success_msg;
 
     public static function fmtFilesArray($name, $type, $tmp_name, $error, $size)
     {
@@ -127,6 +128,9 @@ class sendHelper{
                     self::$manager_subject = $jsend_params->get('manager_subject');
                     self::$manager_body = $jsend_params->get('manager_body');
                     self::$manager_email = $jsend_params->get('manager_email');
+
+					self::$ajax = $jsend_params->get('ajax_send');
+					self::$ajax_success_msg = $jsend_params->get('success_modal_text');
                 }
             }
         }
@@ -159,6 +163,7 @@ class sendHelper{
 
         if ($showname = $jsend_params->get('showname', 0) > 0)
         {
+
             self::$name = $jinput->getVar('name', '');
 
             if ($showname === MOD_JSEND_FIELD_REQUIRED && (!self::$name || strlen(self::$name) < 3))
@@ -180,11 +185,11 @@ class sendHelper{
 
         }
 
-        if ($showdesc = $jsend_params->get('showdesc', 0) > 0)
+        if ($showcomment = $jsend_params->get('showcomment', 0) > 0)
         {
-            self::$desc = $jinput->getVar('desc', '');
+            self::$comment = $jinput->getVar('comment', '');
 
-            if ($showdesc === MOD_JSEND_FIELD_REQUIRED && !self::$desc)
+            if ($showcomment === MOD_JSEND_FIELD_REQUIRED && !self::$comment)
             {
                     $app->redirect('/', JText::_('Некоректное сообщение'));
                     return;
@@ -237,7 +242,12 @@ class sendHelper{
         $url_refer = $_SERVER['HTTP_REFERER'];
 
         $mail->addRecipient(self::$manager_email);
-        $mail->addReplyTo(array(self::$manager_email, self::$name));
+		if(version_compare(JVERSION, '3.0', 'ge')) {
+			$mail->addReplyTo(self::$manager_email, self::$name);
+		} else {
+			$mail->addReplyTo(array(self::$manager_email, self::$name));
+		}
+        // $mail->addReplyTo(array(self::$manager_email, self::$name));
         $mail->setSender(array($mailfrom, $fromname));
         $mail->setSubject(self::$manager_subject);
 
@@ -259,8 +269,8 @@ class sendHelper{
         {
             $body .= 'Список: '.self::$list_val."\n";
         }
-        if (self::$desc)
-            $body .= 'Описание вопроса: '.self::$desc."\n";
+        if (self::$comment)
+            $body .= 'Описание вопроса: '.self::$comment."\n";
 
         $body .= 'Страница отправки: '.$url_refer."\n";
 
@@ -277,7 +287,12 @@ class sendHelper{
         {
             $mail = JFactory::getMailer();
             $mail->addRecipient(self::$email);
-            $mail->addReplyTo(array(self::$email, self::$name));
+			if(version_compare(JVERSION, '3.0', 'ge')) {
+				$mail->addReplyTo(self::$email, self::$name);
+			} else {
+				$mail->addReplyTo(array(self::$email, self::$name));
+			}
+            // $mail->addReplyTo(array(self::$email, self::$name));
             $mail->setSender(array($mailfrom, $fromname));
             $mail->setSubject(self::$client_subject);
 
@@ -290,7 +305,13 @@ class sendHelper{
             $sent = $mail->Send();
         }
 
-        if ($sent) $app->redirect(self::$page_redirect, '');
+        if ($sent) {
+			if (self::$ajax) {
+				echo self::$ajax_success_msg;
+			} else {
+				$app->redirect(self::$page_redirect, '');
+			}
+		}
     }
 }
 

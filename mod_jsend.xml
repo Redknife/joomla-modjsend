@@ -16,7 +16,7 @@
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 		<filename>tmpl/default.php</filename>
-		<filename>tmpl/modal.php</filename>
+		<filename>tmpl/responsive.php</filename>
 	</files>
 	<languages folder="language">
 		<language tag="ru-RU">ru-RU/ru-RU.mod_jsend.ini</language>
@@ -134,7 +134,7 @@
 				</field>
 
 				<field
-					name="showdesc"
+					name="showcomment"
 					type="radio"
 					class="btn-group"
 					default="1"
@@ -149,15 +149,15 @@
 				</field>
 
 				<field
-					name="desc_placeholder"
+					name="comment_placeholder"
 					type="text"
 					class="inputbox"
-					default="Описание вопроса"
+					default="Комментарий"
 					label="MOD_JSEND_FIELD_DESC_PLACEHOLDER_LABEL">
 				</field>
 
 				<field
-					name="showfileupload"
+					name="showattachment"
 					type="radio"
 					class="btn-group"
 					default="0"
@@ -167,6 +167,14 @@
 						value="0">JHIDE</option>
 					<option
 						value="1">JSHOW</option>
+				</field>
+
+				<field
+						name="attachment_caption"
+						type="text"
+						class="inputbox"
+						default="Прикрепить файл"
+						label="MOD_JSEND_FIELD_ATTACHMENT_CAPTION_LABEL">
 				</field>
 
 				<field
@@ -207,11 +215,12 @@
 					type="text"
 					class="inputbox"
 					default="Отправить"
-					label="MOD_JSEND_FIELD_BTNTEXT_LABEL">
+					label="MOD_JSEND_FIELD_BTNTEXT_LABEL"
+                    filter="safehtml">
 				</field>
 
 				<field
-					name="text"
+					name="caption"
 					type="editor"
 					default=""
 					label="MOD_JSEND_FIELD_TEXT_LABEL"
@@ -221,20 +230,25 @@
 					buttons="false"	/>
 
 				<field
-					name="form_wrapper_id"
-					type="text"
-					class="inputbox"
-					default=""
-					label="MOD_JSEND_FORM_WRAPPER_ID_LABEL">
-				</field>
-
-				<field
 					name="form_suffix"
 					type="text"
 					class="inputbox"
 					default=""
 					label="MOD_JSEND_FORM_SUFFIX_LABEL">
 				</field>
+
+                <field
+                        name="show_in_modal"
+                        type="radio"
+                        class="btn-group"
+                        default="0"
+                        label="MOD_JSEND_FIELD_SHOW_IN_MODAL_LABEL"
+                        description="">
+                    <option
+                            value="0">JNO</option>
+                    <option
+                            value="1">JYES</option>
+                </field>
 
 				<field
 					name="modal_btnclass"
@@ -249,8 +263,32 @@
 					type="text"
 					class="inputbox"
 					default="Заказать"
-					label="MOD_JSEND_FIELD_MODALBTNTEXT_LABEL">
+					label="MOD_JSEND_FIELD_MODALBTNTEXT_LABEL"
+                    filter="safehtml">
 				</field>
+
+                <field
+                        name="ajax_send"
+                        type="radio"
+                        class="btn-group"
+                        default="1"
+                        label="MOD_JSEND_FIELD_AJAX_SEND_LABEL"
+                        description="">
+                    <option
+                            value="0">JNO</option>
+                    <option
+                            value="1">JYES</option>
+                </field>
+
+                <field
+                        name="success_modal_text"
+                        type="editor"
+                        default=""
+                        label="MOD_JSEND_FIELD_SUCCESS_MODAL_TEXT_LABEL"
+                        description=""
+                        class="inputbox"
+                        filter="JComponentHelper::filterText"
+                        buttons="false"	/>
 			</fieldset>
 
 			<fieldset name="client_mail">
